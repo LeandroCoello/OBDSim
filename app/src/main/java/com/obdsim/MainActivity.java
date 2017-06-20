@@ -1,28 +1,17 @@
 package com.obdsim;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,17 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private static final UUID MY_UUID_SECURE = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final UUID MY_UUID_INSECURE = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
-    private static AcceptThread listeningThread;
-    private BluetoothChatService mChatService;
-    private String mConnectedDeviceName = null;
-    private StringBuffer mOutStringBuffer;
-
-
-
+    private static BluetoothTask listeningThread;
     private ListView status;
     private Button startButton;
     private Button stopButton;
     private List<String> states = new ArrayList<String>();
+    private Boolean stopFlag = false;
 
 
     @Override
@@ -63,100 +47,33 @@ public class MainActivity extends AppCompatActivity {
         stopButton = (Button) findViewById(R.id.stopButton);
         stopButton.setEnabled(false);
         status.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item,states));
-        updateStatus("hola", 0);
         enableBluetooth();
 
-//        if (mChatService == null) {
-//            setupChat();
-//        }
-
     }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        // Performing this check in onResume() covers the case in which BT was
-//        // not enabled during onStart(), so we were paused to enable it...
-//        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-//        if (mChatService != null) {
-//            // Only if the state is STATE_NONE, do we know that we haven't started already
-//            if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
-//                // Start the Bluetooth chat services
-//                mChatService.start();
-//            }
-//        }
-//    }
-
-    /**
-     * The Handler that gets information back from the BluetoothChatService
-     */
-//    private final Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-////            FragmentActivity activity = getActivity();
-//            switch (msg.what) {
-//                case Constants.MESSAGE_STATE_CHANGE:
-//                    switch (msg.arg1) {
-//                        case BluetoothChatService.STATE_CONNECTED:
-//                            updateStatus("Conectado a", 0);
-//                            break;
-//                        case BluetoothChatService.STATE_CONNECTING:
-//                            updateStatus("Conecting..", 0);
-//                            break;
-//                        case BluetoothChatService.STATE_LISTEN:
-//                        case BluetoothChatService.STATE_NONE:
-//                            updateStatus("Not connected.", 0);
-//                            break;
-//                    }
-//                    break;
-//                case Constants.MESSAGE_READ:
-//                    byte[] readBuf = (byte[]) msg.obj;
-//                    // construct a string from the valid bytes in the buffer
-//                    String readMessage = new String(readBuf, 0, msg.arg1);
-//                    updateStatus(readMessage,0);
-//                    break;
-//                case Constants.MESSAGE_DEVICE_NAME:
-//                    // save the connected device's name
-//                    mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
-//
-//                    updateStatus("Connected to " + mConnectedDeviceName, 0);
-//
-//                    break;
-//            }
-//        }
-//    };
-//
-//    private void setupChat() {
-//
-//        // Initialize the BluetoothChatService to perform bluetooth connections
-//        mChatService = new BluetoothChatService(this, mHandler);
-//
-//        // Initialize the buffer for outgoing messages
-//        mOutStringBuffer = new StringBuffer("");
-//    }
-
 
 
     public void start(View v){
-        updateStatus("Connecting..", 0);
+        updateStatus(getString(R.string.connecting), 0);
 
         BluetoothAdapter ba = startBluetooth();
         if ( ba != null ) {
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
-            listeningThread = new AcceptThread(ba, this);
+            listeningThread = new BluetoothTask(ba, this);
             listeningThread.execute();
+        } else {
+            updateStatus(getString(R.string.no_bluetooth_adapter),2);
         }
+        stopFlag = false;
     }
 
     public void stop(View v){
-        Toast.makeText(getApplicationContext(),"Stopped Listening.",Toast.LENGTH_LONG).show();
-        updateStatus("Stopped Listening.", 0);
+        showToast(getString(R.string.stopped_listening));
+        updateStatus(getString(R.string.stopped_listening), 0);
         stopButton.setEnabled(false);
         startButton.setEnabled(true);
-        listeningThread.cancel(false);
-
+//        listeningThread.cancel(false);
+        stopFlag = true;
     }
 
     protected BluetoothAdapter startBluetooth(){
@@ -165,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         BluetoothAdapter mBluetoothAdapter = getBluetoothAdapter();
         if (mBluetoothAdapter == null) {
             // Device does not support Bluetooth
-            Toast.makeText(getApplicationContext(),"Device does not support Bluetooth",Toast.LENGTH_LONG).show();
-            updateStatus("Device does not support Bluetooth",2);
+            showToast(getString(R.string.no_bluetooth));
+            updateStatus(getString(R.string.no_bluetooth),2);
             return mBluetoothAdapter;
         }
 
@@ -234,8 +151,14 @@ public class MainActivity extends AppCompatActivity {
             newState = "[INFO][RECEIVED] " + newState;
         }
 
+        if (type == 4) {
+            newState = "[INFO][SENT] " + newState;
+        }
+
         states.add(newState);
-        status.setAdapter(new ArrayAdapter<>(this, R.layout.list_item,states));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item,states);
+        status.setAdapter(adapter);
+        status.setSelection(adapter.getCount());
     }
 
     public void enableBluetooth() {
@@ -245,20 +168,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(enableBtIntent, 1);
         }
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // If BT is not on, request that it be enabled.
-//        // setupChat() will then be called during onActivityResult
-//        if (!getBluetoothAdapter().isEnabled()) {
-//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-//            // Otherwise, setup the chat session
-//        } else if (mChatService == null) {
-//            setupChat();
-//        }
-//    }
 
 
     private BluetoothAdapter getBluetoothAdapter() {
@@ -272,13 +181,17 @@ public class MainActivity extends AppCompatActivity {
             ba.disable();
         }
         super.onDestroy();
-
-        if (mChatService != null) {
-            mChatService.stop();
-        }
     }
 
     public void showToast(String msg) {
         Toast.makeText(getApplicationContext(),msg, Toast.LENGTH_LONG).show();
+    }
+
+    public Boolean getStopFlag() {
+        return stopFlag;
+    }
+
+    public void setStopFlag(Boolean stopFlag) {
+        this.stopFlag = stopFlag;
     }
 }

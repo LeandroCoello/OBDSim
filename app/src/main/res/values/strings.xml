@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">OBDSim</string>
+    <string name="connecting">Connecting...</string>
+    <string name="stopped_listening">Stopped Listening.</string>
+    <string name="connected">Connected!</string>
+    <string name="process_terminated">Process Terminated.</string>
+    <string name="accepted">BluetoothSocket Accepted.</string>
+    <string name="null_socket">Null BluetoothSocket.</string>
+    <string name="no_bluetooth_adapter">No BluetoothAdapter.</string>
+    <string name="no_bluetooth">Device does not support Bluetooth</string>
+    <string name="problem_receiving">Connection lost, can not receive bytes.</string>
+    <string name="receiving">Receiving data...</string>
+    <string name="problem_closing_socket">Problem closing BluetoothSocket.</string>
+    <string name="reading_bytes">Reading bytes...</string>
+    <string name="finished_reading_bytes">Finished reading bytes.</string>
 </resources>

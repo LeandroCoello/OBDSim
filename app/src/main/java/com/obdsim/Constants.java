@@ -16,9 +16,6 @@
 
 package com.obdsim;
 
-/**
- * Defines several constants used between {@link BluetoothChatService} and the UI.
- */
 public interface Constants {
 
     // Message types sent from the BluetoothChatService Handler
