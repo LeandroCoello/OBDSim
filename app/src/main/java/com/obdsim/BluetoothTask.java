@@ -71,6 +71,9 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
                         mmOutStream.write(response.getBytes());
                         publishProgress(getPublishList(response,"4"));
 
+                        commands.updateRPM();
+                        commands.updateSpeed();
+
                     } catch (IOException e) {
 //                        publishProgress(getPublishList(e.getMessage(),"2"));
                         publishProgress(getPublishList(main.getString(R.string.problem_receiving),"2"));

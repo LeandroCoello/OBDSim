@@ -11,6 +11,8 @@ public class CommandsContainer {
 
     LinkedHashMap<String,String> commandMap = new LinkedHashMap<String,String>();
     private static CommandsContainer instance = null;
+    private static Integer speed = 160;
+    private static Integer rpm = 3500;
 
     private CommandsContainer() {
 
@@ -77,6 +79,25 @@ public class CommandsContainer {
     public String getResponse(String readMessage){
         String response = commandMap.get(readMessage);
         return response!=null ? response : "";
+    }
+
+    public void updateSpeed(){
+
+        speed ++;
+        if(speed == 255){
+            speed = 0;
+        }
+        String spp = Integer.valueOf(speed.toString(),16).toString();
+        String value = "41 0D " + spp + ">";
+        commandMap.put("01 0D", value);
+    }
+
+    public void updateRPM(){
+
+        rpm ++;
+        String spp = Integer.valueOf(rpm.toString(),16).toString();
+        String value = "41 0C " + spp + ">";
+        commandMap.put("01 0C", value);
     }
 
 }
