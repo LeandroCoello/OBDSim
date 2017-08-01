@@ -23,7 +23,17 @@ public class CommandsContainer {
         commandMap.put("AT ST 3e", "OK>");
         commandMap.put("AT SP 0", "OK>");
 
+        //Available pids
+
+//        commandMap.put("01 00", "01 00 80 00 00 00>");
+        commandMap.put("01 00", "01 00 FF FF FF F0>");
+        commandMap.put("01 20", "01 20 FF FF FF F0>");
+        commandMap.put("01 40", "01 40 FF FF FF F0>");
+        commandMap.put("01 60", "01 60 FF FF FF F0>");
+        commandMap.put("01 80", "01 80 FF FF FF F0>");
+
         // Control
+
         commandMap.put("01 46", "41 46 50>");
         commandMap.put("01 42", "41 42 0F 0f>");
         commandMap.put("01 44", "41 44 64 FF>");
@@ -40,7 +50,7 @@ public class CommandsContainer {
         commandMap.put("01 10", "41 10 64 64>");
         commandMap.put("01 11", "41 11 96>");
 
-        // Fluel
+        // Fuel
         commandMap.put("01 51", "41 51 01>");
         commandMap.put("01 5E", "41 5E 64 FA>");
         commandMap.put("01 2F", "41 5E 64>");

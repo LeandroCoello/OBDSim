@@ -4,13 +4,11 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by Leo on 18/6/2017.
@@ -58,7 +56,7 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
                 mmOutStream = socket.getOutputStream();
 
                 while (!main.getStopFlag()) {
-                    try {
+                        try {
                         // Read from the InputStream
                         publishProgress(getPublishList(main.getString(R.string.receiving),"0"));
 
