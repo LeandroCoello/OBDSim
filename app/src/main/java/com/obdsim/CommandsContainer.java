@@ -17,63 +17,82 @@ public class CommandsContainer {
     private CommandsContainer() {
 
         // Initialize
-        commandMap.put("AT Z", "OK>");
-        commandMap.put("AT E0", "OK>");
-        commandMap.put("AT L0", "OK>");
-        commandMap.put("AT ST 3e", "OK>");
-        commandMap.put("AT SP 0", "OK>");
+//        commandMap.put("ATZ", "OK>");
+        commandMap.put("ATZ", "ELM327 v1.3a\nOK>");
+        commandMap.put("ATE0", "OK>");
+        commandMap.put("ATE1", "OK>");
+        commandMap.put("ATL0", "OK>");
+        commandMap.put("ATM0", "OK>");
+        commandMap.put("ATS0", "OK>");
+        commandMap.put("ATST3e", "OK>");
+        commandMap.put("ATSP0", "OK>");
+        commandMap.put("ATSP1", "OK>");
+        commandMap.put("ATSP2", "OK>");
+        commandMap.put("ATSP3", "OK>");
+        commandMap.put("ATSP4", "OK>");
+        commandMap.put("ATSP5", "OK>");
+        commandMap.put("ATSP6", "OK>");
+        commandMap.put("ATSP7", "OK>");
+        commandMap.put("ATSP8", "OK>");
+        commandMap.put("ATSP9", "OK>");
+        commandMap.put("AT@1", "OBDII to RS232 Interpreter\nOK>");
+        commandMap.put("ATI", "ELM327 v1.3a\nOK>");
+        commandMap.put("ATH0", "OK>");
+        commandMap.put("ATH1", "OK>");
+        commandMap.put("ATAT1", "OK>");
+        commandMap.put("ATDPN", "A6>");
 
         //Available pids
 
 //        commandMap.put("01 00", "01 00 80 00 00 00>");
-        commandMap.put("01 00", "01 00 FF FF FF F0>");
-        commandMap.put("01 20", "01 20 FF FF FF F0>");
-        commandMap.put("01 40", "01 40 FF FF FF F0>");
-        commandMap.put("01 60", "01 60 FF FF FF F0>");
-        commandMap.put("01 80", "01 80 FF FF FF F0>");
+        commandMap.put("0100", "01 00 FF FF FF F0>");
+        commandMap.put("0120", "01 20 FF FF FF F0>");
+        commandMap.put("0140", "01 40 FF FF FF F0>");
+        commandMap.put("0160", "01 60 FF FF FF F0>");
+        commandMap.put("0180", "01 80 FF FF FF F0>");
 
         // Control
 
-        commandMap.put("01 46", "41 46 50>");
-        commandMap.put("01 42", "41 42 0F 0f>");
-        commandMap.put("01 44", "41 44 64 FF>");
-        commandMap.put("01 21", "41 21 10 00>");
-        commandMap.put("01 01", "41 01 84>");
-        commandMap.put("01 0E", "41 0E 84>");
+        commandMap.put("0146", "41 46 50>");
+        commandMap.put("0142", "41 42 0F 0f>");
+        commandMap.put("0144", "41 44 64 FF>");
+        commandMap.put("0121", "41 21 10 00>");
+        commandMap.put("0101", "41 01 84>");
+        commandMap.put("010E", "41 0E 84>");
         commandMap.put("03", "43 01 33 00 00 00 00>");
-        commandMap.put("09 02", "31 48 47 42 48 34 31 4A 58 4D 4E 31 30 39 31 38 36>");
+        commandMap.put("0902", "31 48 47 42 48 34 31 4A 58 4D 4E 31 30 39 31 38 36>");
 
         // Engine
-        commandMap.put("01 04", "41 04 78>");
-        commandMap.put("01 0C", "41 0C 32 96>");
-        commandMap.put("01 1F", "41 0F 10 14>");
-        commandMap.put("01 10", "41 10 64 64>");
-        commandMap.put("01 11", "41 11 96>");
+        commandMap.put("0104", "41 04 78>");
+        commandMap.put("010C", "41 0C 32 96>");
+        commandMap.put("011F", "41 0F 10 14>");
+        commandMap.put("0110", "41 10 64 64>");
+        commandMap.put("0111", "41 11 96>");
 
         // Fuel
-        commandMap.put("01 51", "41 51 01>");
-        commandMap.put("01 5E", "41 5E 64 FA>");
-        commandMap.put("01 2F", "41 5E 64>");
-        commandMap.put("01 06", "41 06 B4>");
-        commandMap.put("01 07", "41 07 B4>");
-        commandMap.put("01 08", "41 08 B4>");
-        commandMap.put("01 09", "41 09 B4>");
-        commandMap.put("01 44", "41 44 34 87>");
-        commandMap.put("01 34", "41 34 34 87>");
-        commandMap.put("01 5C", "41 5C 64>");
+        commandMap.put("0151", "41 51 01>");
+        commandMap.put("015E", "41 5E 64 FA>");
+        commandMap.put("012F", "41 5E 64>");
+        commandMap.put("0106", "41 06 B4>");
+        commandMap.put("0107", "41 07 B4>");
+        commandMap.put("0108", "41 08 B4>");
+        commandMap.put("0109", "41 09 B4>");
+        commandMap.put("0144", "41 44 34 87>");
+        commandMap.put("0134", "41 34 34 87>");
+        commandMap.put("015C", "41 5C 64>");
 
         // Pressure
-        commandMap.put("01 33", "41 33 96>");
-        commandMap.put("01 0A", "41 0A 97>");
-        commandMap.put("01 23", "41 23 98>");
-        commandMap.put("01 0B", "41 0B 99>");
+        commandMap.put("0133", "41 33 96>");
+        commandMap.put("010A", "41 0A 97>");
+        commandMap.put("0123", "41 23 98>");
+        commandMap.put("010B", "41 0B 99>");
 
         // Temperature
-        commandMap.put("01 0F", "41 0F A0>");
-        commandMap.put("01 05", "41 05 A1>");
+        commandMap.put("010F", "41 0F A0>");
+        commandMap.put("0105", "41 05 A1>");
 
         // Misc
-        commandMap.put("01 0D", "41 0D A0>");
+        commandMap.put("010D", "41 0D A0>");
 
 
 
@@ -99,7 +118,7 @@ public class CommandsContainer {
         }
         String spp = Integer.valueOf(speed.toString(),16).toString();
         String value = "41 0D " + spp + ">";
-        commandMap.put("01 0D", value);
+        commandMap.put("010D", value);
     }
 
     public void updateRPM(){
@@ -107,7 +126,7 @@ public class CommandsContainer {
         rpm ++;
         String spp = Integer.valueOf(rpm.toString(),16).toString();
         String value = "41 0C " + spp + ">";
-        commandMap.put("01 0C", value);
+        commandMap.put("010C", value);
     }
 
 }

@@ -23,6 +23,7 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
         private InputStream mmInStream = null;
         private OutputStream mmOutStream= null;
         CommandsContainer commands;
+        BluetoothSocket socket = null;
 
         public BluetoothTask(BluetoothAdapter mBluetoothAdapter, MainActivity main) {
             // Use a temporary object that is later assigned to mmServerSocket,
@@ -41,8 +42,6 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
     @Override
     protected String doInBackground(String... strings) {
 
-            BluetoothSocket socket = null;
-
             try {
                 //Accepting incoming connection.
                 socket = mmServerSocket.accept();
@@ -55,7 +54,7 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
                 mmInStream = socket.getInputStream();
                 mmOutStream = socket.getOutputStream();
 
-                while (!main.getStopFlag()) {
+                while ( !isCancelled() ) {
                         try {
                         // Read from the InputStream
                         publishProgress(getPublishList(main.getString(R.string.receiving),"0"));
@@ -112,6 +111,17 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
 
     protected void onPostExecute(String result) {
         main.updateStatus(main.getString(R.string.process_terminated), 0);
+    }
+
+    @Override
+    protected void onCancelled() {
+        if ( socket != null ) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                main.showToast(e.getMessage());
+            }
+        }
     }
 
 }

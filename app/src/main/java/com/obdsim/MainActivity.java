@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void start(View v){
+        states = new ArrayList<String>();
+        status.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item,states));
+
         updateStatus(getString(R.string.connecting), 0);
 
         BluetoothAdapter ba = startBluetooth();
@@ -64,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             updateStatus(getString(R.string.no_bluetooth_adapter),2);
         }
-        stopFlag = false;
     }
 
     public void stop(View v){
@@ -72,8 +74,10 @@ public class MainActivity extends AppCompatActivity {
         updateStatus(getString(R.string.stopped_listening), 0);
         stopButton.setEnabled(false);
         startButton.setEnabled(true);
-//        listeningThread.cancel(false);
-        stopFlag = true;
+
+        if (! listeningThread.isCancelled()) {
+            listeningThread.cancel(true);
+        }
     }
 
     protected BluetoothAdapter startBluetooth(){
@@ -194,4 +198,6 @@ public class MainActivity extends AppCompatActivity {
     public void setStopFlag(Boolean stopFlag) {
         this.stopFlag = stopFlag;
     }
+
+
 }
