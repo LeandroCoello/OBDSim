@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private Button startButton;
     private Button stopButton;
     private List<String> states = new ArrayList<String>();
-    private Boolean stopFlag = false;
 
 
     @Override
@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
         if ( ba != null ) {
             startButton.setEnabled(false);
             stopButton.setEnabled(true);
+
+            if (listeningThread != null && !listeningThread.isCancelled()) {
+                listeningThread.cancel(true);
+                listeningThread = null;
+            }
+
             listeningThread = new BluetoothTask(ba, this);
             listeningThread.execute();
         } else {
@@ -71,12 +77,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void stop(View v){
         showToast(getString(R.string.stopped_listening));
-        updateStatus(getString(R.string.stopped_listening), 0);
-        stopButton.setEnabled(false);
+        states.clear();
+        status.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item,states));
         startButton.setEnabled(true);
+        stopButton.setEnabled(false);
 
-        if (! listeningThread.isCancelled()) {
+        if (listeningThread != null && !listeningThread.isCancelled()) {
             listeningThread.cancel(true);
+            listeningThread = null;
         }
     }
 
@@ -189,14 +197,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void showToast(String msg) {
         Toast.makeText(getApplicationContext(),msg, Toast.LENGTH_LONG).show();
-    }
-
-    public Boolean getStopFlag() {
-        return stopFlag;
-    }
-
-    public void setStopFlag(Boolean stopFlag) {
-        this.stopFlag = stopFlag;
     }
 
 
