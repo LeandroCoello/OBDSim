@@ -1,4 +1,4 @@
-package com.obdsim;
+package com.obdsim.activities;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -7,9 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.obdsim.persistence.ObdCommandContract;
+import com.obdsim.persistence.entities.MockObdCommand;
+import com.obdsim.tasks.BluetoothTask;
+import com.obdsim.R;
+import com.obdsim.persistence.DataBaseService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private Button startButton;
     private Button stopButton;
     private List<String> states = new ArrayList<String>();
-
+    private DataBaseService dataBaseService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
         startButton = (Button) findViewById(R.id.startButton);
         stopButton = (Button) findViewById(R.id.stopButton);
         stopButton.setEnabled(false);
-        status.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item,states));
+        status.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item_main,states));
+
+        dataBaseService = new DataBaseService(this);
         enableBluetooth();
 
     }
@@ -54,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void start(View v){
         states = new ArrayList<String>();
-        status.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item,states));
+        status.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item_main,states));
 
         updateStatus(getString(R.string.connecting), 0);
 
@@ -86,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
             listeningThread.cancel(true);
             listeningThread = null;
         }
+    }
+
+    public void showCommands(View v) {
+        startActivity(new Intent(this, CommandsActivity.class));
     }
 
     protected BluetoothAdapter startBluetooth(){
@@ -168,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         states.add(newState);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item,states);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_main,states);
         status.setAdapter(adapter);
         status.setSelection(adapter.getCount());
     }
@@ -199,5 +210,16 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),msg, Toast.LENGTH_LONG).show();
     }
 
+    public DataBaseService getDataBaseService() {
+        return dataBaseService;
+    }
 
+    @Override
+    public void onBackPressed(){
+        if(listeningThread !=null && !listeningThread.isCancelled()) {
+            listeningThread.cancel(true);
+            listeningThread = null;
+        }
+        super.onBackPressed();
+    }
 }

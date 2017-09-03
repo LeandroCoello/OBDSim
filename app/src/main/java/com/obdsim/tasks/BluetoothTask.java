@@ -1,14 +1,21 @@
-package com.obdsim;
+package com.obdsim.tasks;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 
+import com.obdsim.R;
+import com.obdsim.activities.MainActivity;
+import com.obdsim.persistence.DataBaseService;
+import com.obdsim.persistence.entities.MockObdCommand;
+import com.obdsim.persistence.ObdCommandContract;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Leo on 18/6/2017.
@@ -22,7 +29,7 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
         int bytesReceived;
         private InputStream mmInStream = null;
         private OutputStream mmOutStream= null;
-        CommandsContainer commands;
+        DataBaseService dataBaseService;
         BluetoothSocket socket = null;
 
         public BluetoothTask(BluetoothAdapter mBluetoothAdapter, MainActivity main) {
@@ -36,7 +43,8 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
             } catch (IOException e) { }
             mmServerSocket = tmp;
 
-            commands = CommandsContainer.getInstance();
+            dataBaseService = main.getDataBaseService();
+
         }
 
     @Override
@@ -54,7 +62,7 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
                 mmInStream = socket.getInputStream();
                 mmOutStream = socket.getOutputStream();
 
-                while ( !isCancelled() ) {
+                while ( !isCancelled() || socket.isConnected() ) {
                         try {
                         // Read from the InputStream
                         publishProgress(getPublishList(main.getString(R.string.receiving),"0"));
@@ -63,16 +71,16 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
                         String readMessage = new String(buffer, 0, bytesReceived).trim();
                         publishProgress(getPublishList(readMessage,"3"));
 
-                        // Write Response to OutputStream
-                        String response = commands.getResponse(readMessage);
+                        // Get response and write it into OutputStream
+                        String where = ObdCommandContract.CommandEntry.CODE+"=?";
+                        String[] values = new String[]{readMessage};
+                        List<MockObdCommand> commands = dataBaseService.getCommands(where, values);
+                        MockObdCommand mCmd = commands.get(0);
+                        String response = mCmd.getResponse();
                         mmOutStream.write(response.getBytes());
                         publishProgress(getPublishList(response,"4"));
 
-                        commands.updateRPM();
-                        commands.updateSpeed();
-
                     } catch (IOException e) {
-//                        publishProgress(getPublishList(e.getMessage(),"2"));
                         publishProgress(getPublishList(main.getString(R.string.problem_receiving),"2"));
                         socket.close();
                         break;

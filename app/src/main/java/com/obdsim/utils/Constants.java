@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.obdsim;
+package com.obdsim.utils;
 
 public interface Constants {
 
