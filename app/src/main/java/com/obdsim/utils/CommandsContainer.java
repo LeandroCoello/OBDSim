@@ -60,7 +60,7 @@ public class CommandsContainer {
         commandList.add(new MockObdCommand("0121", "41 21 10 00>"));
         commandList.add(new MockObdCommand("0101", "41 01 81>"));
         commandList.add(new MockObdCommand("010E", "41 0E 84>"));
-        commandList.add(new MockObdCommand("03", "43 01 33 00 00 00 00>"));
+        commandList.add(new MockObdCommand("03", "43 05 7F 01 26 D3 97>"));
         commandList.add(new MockObdCommand("0902", "31 48 47 42 48 34 31 4A 58 4D 4E 31 30 39 31 38 36>"));
 
         // Engine
