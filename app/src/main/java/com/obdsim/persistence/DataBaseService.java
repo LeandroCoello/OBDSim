@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 
+import com.obdsim.persistence.entities.RPMCommand;
 import com.obdsim.utils.CommandsContainer;
 import com.obdsim.persistence.entities.MockObdCommand;
 
@@ -54,7 +56,9 @@ public class DataBaseService extends SQLiteOpenHelper {
         String[] projection = {
                 ObdCommandContract.CommandEntry._ID,
                 ObdCommandContract.CommandEntry.CODE,
-                ObdCommandContract.CommandEntry.RESPONSE
+                ObdCommandContract.CommandEntry.RESPONSE,
+                ObdCommandContract.CommandEntry.STATE_FLAG,
+                ObdCommandContract.CommandEntry.DESCRIPTION
         };
 
         Cursor c = db.query(
@@ -69,7 +73,7 @@ public class DataBaseService extends SQLiteOpenHelper {
 
         if (c.moveToFirst()) {
             do {
-                MockObdCommand cmd = new MockObdCommand(c.getInt(0), c.getString(1), c.getString(2));
+                MockObdCommand cmd = ObdCommandRowMapper.getCommand(c);
                 cmds.add(cmd);
             } while(c.moveToNext());
         }
@@ -82,6 +86,8 @@ public class DataBaseService extends SQLiteOpenHelper {
 
         values.put(ObdCommandContract.CommandEntry.CODE, cmd.getCmd());
         values.put(ObdCommandContract.CommandEntry.RESPONSE, cmd.getResponse());
+        values.put(ObdCommandContract.CommandEntry.STATE_FLAG, cmd.getStateFlag());
+        values.put(ObdCommandContract.CommandEntry.DESCRIPTION, cmd.getDescription());
 
         Long id = db.insert(ObdCommandContract.CommandEntry.TABLE_NAME, null, values);
         cmd.set_id(id.intValue());

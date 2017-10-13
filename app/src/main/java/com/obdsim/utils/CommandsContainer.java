@@ -1,8 +1,10 @@
 package com.obdsim.utils;
 
 import com.obdsim.persistence.entities.MockObdCommand;
+import com.obdsim.persistence.entities.RPMCommand;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Leo on 20/6/2017.
@@ -12,10 +14,15 @@ public class CommandsContainer {
 
     ArrayList<MockObdCommand> commandList = new ArrayList<>();
     private static CommandsContainer instance = null;
-    private static Integer speed = 160;
-    private static Integer rpm = 3500;
+    private LinkedHashMap<String, Class<? extends MockObdCommand>> map = new LinkedHashMap<String, Class<? extends MockObdCommand>>();
+
 
     private CommandsContainer() {
+        setCommands();
+        setMapper();
+    }
+
+    private void setCommands() {
 
         // Initialize
         commandList.add(new MockObdCommand("ATZ", "ELM327 v1.3a\nOK>"));
@@ -65,7 +72,8 @@ public class CommandsContainer {
 
         // Engine
         commandList.add(new MockObdCommand("0104", "41 04 78>"));
-        commandList.add(new MockObdCommand("010C", "41 0C 32 96>"));
+//        commandList.add(new MockObdCommand("010C", "41 0C 32 96>"));
+        commandList.add(new RPMCommand("010C", "41 0C 32 96>", "RPM del motor", true));
         commandList.add(new MockObdCommand("011F", "41 0F 10 14>"));
         commandList.add(new MockObdCommand("0110", "41 10 64 64>"));
         commandList.add(new MockObdCommand("0111", "41 11 96>"));
@@ -97,11 +105,22 @@ public class CommandsContainer {
 
     }
 
+    public void setMapper() {
+
+        for (MockObdCommand cmd: commandList) {
+            map.put(cmd.getCmd(),cmd.getClass());
+        }
+
+    }
     public static CommandsContainer getInstance() {
         if(instance == null) {
             instance = new CommandsContainer();
         }
         return instance;
+    }
+
+    public LinkedHashMap<String, Class<? extends MockObdCommand>> getMap() {
+        return map;
     }
 
     public ArrayList<MockObdCommand> getCommandList() {

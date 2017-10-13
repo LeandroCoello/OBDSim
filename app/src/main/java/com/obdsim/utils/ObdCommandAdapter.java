@@ -22,8 +22,8 @@ import java.util.List;
 
 public class ObdCommandAdapter extends RecyclerView.Adapter<ObdCommandAdapter.MyViewHolder> {
 
-    private List<MockObdCommand> cmds;
-    private Context mContext;
+    protected List<MockObdCommand> cmds;
+    protected Context mContext;
 
     /**
      * Default constructor
@@ -65,10 +65,10 @@ public class ObdCommandAdapter extends RecyclerView.Adapter<ObdCommandAdapter.My
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView cmdName;
-        private TextView responseValue;
-        private Button updateBtn;
-        private Button deleteBtn;
+        protected TextView cmdName;
+        protected TextView responseValue;
+        protected Button updateBtn;
+        protected Button deleteBtn;
 
         public MyViewHolder(View itemView) {
             super(itemView);

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.obdsim.R;
 import com.obdsim.persistence.DataBaseService;
@@ -20,9 +21,9 @@ import java.util.List;
 
 public class CommandsActivity extends AppCompatActivity {
 
-    private DataBaseService dataBaseService;
-    private RecyclerView recyclerView;
-    private List<MockObdCommand> commands;
+    protected DataBaseService dataBaseService;
+    protected RecyclerView recyclerView;
+    protected List<MockObdCommand> commands;
     private static final int ADD_COMMAND = 0;
     private Menu menu;
 
@@ -73,11 +74,23 @@ public class CommandsActivity extends AppCompatActivity {
         refreshRecyclerViewAdapter();
     }
 
+    public void showToast(String msg) {
+        Toast.makeText(getApplicationContext(),msg, Toast.LENGTH_LONG).show();
+    }
+
     public void addCommand(View v) {
         ConfirmDialog.getInsertDialog(this).show();
     }
 
     public void removeCommand(View v) {
         ConfirmDialog.getInsertDialog(this).show();
+    }
+
+    public List<MockObdCommand> getCommands() {
+        return commands;
+    }
+
+    public void setCommands(List<MockObdCommand> commands) {
+        this.commands = commands;
     }
 }

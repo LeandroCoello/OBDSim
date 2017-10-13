@@ -115,6 +115,44 @@ public class ConfirmDialog {
         return dialog;
     }
 
+    public static AlertDialog getStateUpdateDialog(final CommandsActivity commandsActivity, final MockObdCommand cmd){
+
+        LayoutInflater inflater = commandsActivity.getLayoutInflater();
+        final DataBaseService db = commandsActivity.getDataBaseService();
+
+
+        TableLayout view  = (TableLayout) inflater.inflate(R.layout.staupdate_cmd_dialog, null);
+        View title = inflater.inflate(R.layout.update_command_title, null);
+        final TextView txtCmd = (TextView) view.findViewById(R.id.edit_command);
+        final EditText editResponse = (EditText) view.findViewById(R.id.edit_response);
+        txtCmd.setText(cmd.getDescription());
+        editResponse.setText(cmd.getValue());
+        AlertDialog dialog = new AlertDialog.Builder(commandsActivity)
+                .setCustomTitle(title)
+                .setView(view)
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (!cmd.validateInput(editResponse.getText().toString())) {
+                            commandsActivity.showToast("Invalid Input!");
+                            return;
+                        }
+//                        cmd.setCmd(txtCmd.getText().toString());
+                        cmd.setValue(editResponse.getText().toString());
+                        cmd.setResponse(cmd.generateResponse());
+                        db.updateCommand(cmd);
+                        commandsActivity.refreshRecyclerViewAdapter();
+                        commandsActivity.showToast("Update Succesful!");
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+        return dialog;
+    }
+
     public static AlertDialog getInsertDialog(final CommandsActivity commandsActivity){
 
         LayoutInflater inflater = commandsActivity.getLayoutInflater();

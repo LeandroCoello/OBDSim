@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.CommandsActivity"></activity>
+        <activity android:name=".activities.StateCommandsActivity"></activity>
     </application>
 
 </manifest>

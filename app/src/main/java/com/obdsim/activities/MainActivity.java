@@ -99,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, CommandsActivity.class));
     }
 
+    public void showStateCommands(View v) {
+        startActivity(new Intent(this, StateCommandsActivity.class));
+    }
+
+
     protected BluetoothAdapter startBluetooth(){
 
         //Getting de Bluetooth Adapter

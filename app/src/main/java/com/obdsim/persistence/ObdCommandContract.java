@@ -14,13 +14,18 @@ public final class ObdCommandContract {
 
         public static final String CODE = "name";
         public static final String RESPONSE = "response";
+        public static final String STATE_FLAG = "state_flag";
+        public static final String DESCRIPTION = "description";
     }
 
     public static final String SQL_CREATE_COMMAND_ENTRIES =
             "CREATE TABLE " + CommandEntry.TABLE_NAME + " (" +
                     CommandEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     CommandEntry.CODE + " TEXT," +
-                    CommandEntry.RESPONSE + " TEXT" +
+                    CommandEntry.RESPONSE + " TEXT," +
+                    CommandEntry.STATE_FLAG + " INTEGER," +
+                    CommandEntry.DESCRIPTION + " TEXT" +
+
                     " )";
 
     public static final String SQL_DELETE_COMMAND_ENTRIES = "DROP TABLE IF EXISTS " + CommandEntry.TABLE_NAME;

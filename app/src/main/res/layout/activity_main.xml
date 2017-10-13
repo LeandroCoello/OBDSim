@@ -15,24 +15,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/stopButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="stop"
-                android:text="Stop"
-                android:layout_centerHorizontal="true"
-                android:layout_toRightOf="@+id/space"/>
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/space"/>
 
             <Button
                 android:id="@+id/startButton"
@@ -40,25 +25,46 @@
                 android:layout_height="wrap_content"
                 android:onClick="start"
                 android:text="Start"
+                android:layout_weight="1"
                 android:layout_centerHorizontal="true"
-                android:layout_toLeftOf="@id/space"
-                />
-        </RelativeLayout>
+                android:layout_toLeftOf="@id/space"/>
 
-        <RelativeLayout
+            <Button
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="stop"
+                android:layout_weight="1"
+                android:text="Stop"
+                android:layout_centerHorizontal="true"
+                android:layout_toRightOf="@+id/space"/>
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/commandButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:onClick="showCommands"
                 android:text="Command List"
+                android:layout_weight="1"
                 android:textAllCaps="false" />
 
-        </RelativeLayout>
+            <Button
+                android:id="@+id/stateCommandButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:onClick="showStateCommands"
+                android:text="State Command List"
+                android:layout_weight="1"
+                android:textAllCaps="false" />
+
+        </TableRow>
 
         <RelativeLayout
             android:layout_width="match_parent"
