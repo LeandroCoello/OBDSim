@@ -26,8 +26,7 @@
                 android:onClick="start"
                 android:text="Start"
                 android:layout_weight="1"
-                android:layout_centerHorizontal="true"
-                android:layout_toLeftOf="@id/space"/>
+                android:layout_centerHorizontal="true"/>
 
             <Button
                 android:id="@+id/stopButton"
@@ -36,8 +35,7 @@
                 android:onClick="stop"
                 android:layout_weight="1"
                 android:text="Stop"
-                android:layout_centerHorizontal="true"
-                android:layout_toRightOf="@+id/space"/>
+                android:layout_centerHorizontal="true"/>
         </TableRow>
 
         <TableRow

@@ -1,5 +1,7 @@
 package com.obdsim.persistence.entities;
 
+import android.text.TextUtils;
+
 /**
  * Created by Leo on 20/6/2017.
  */
@@ -9,7 +11,7 @@ public class MockObdCommand {
     private Integer _id;
     private String cmd;
     private String response;
-    private Boolean stateFlag;
+    private Boolean stateFlag = false;
     protected String value;
     protected String description;
 
@@ -21,10 +23,11 @@ public class MockObdCommand {
         this.response = response;
     }
 
-    public MockObdCommand(Integer _id, String cmd, String response) {
+    public MockObdCommand(Integer _id, String cmd, String response, String desc) {
         this._id = _id;
         this.cmd = cmd;
         this.response = response;
+        this.description = desc;
         this.stateFlag = false;
     }
 
@@ -56,11 +59,23 @@ public class MockObdCommand {
     }
 
     public String generateResponse() {
-        return null;
+        String responseHeader = prepareCommandResponse();
+        Integer processedValue = transformValue();
+        String stValue = validateZeros(Integer.toHexString(processedValue));
+        stValue = putSpaces(stValue).toUpperCase();
+        String res = responseHeader + stValue  + ">";
+        return  res;
+    }
+
+    public String validateZeros(String st) {
+        return st;
     }
 
     public Boolean validateInput(String val) {
-        return true;
+        if (TextUtils.isEmpty(val)) {
+            return false;
+        }
+        return TextUtils.isDigitsOnly(val);
     }
 
     protected Integer transformValue() {

@@ -74,6 +74,13 @@ public class DataBaseService extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do {
                 MockObdCommand cmd = ObdCommandRowMapper.getCommand(c);
+                if (cmd == null) {
+                    Integer id = c.getInt(0);
+                    String cmdSt = c.getString(1);
+                    String response = c.getString(2);
+                    String desc = c.getString(4);
+                    cmd = new MockObdCommand(id, cmdSt, response, desc);
+                }
                 cmds.add(cmd);
             } while(c.moveToNext());
         }

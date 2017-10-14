@@ -13,15 +13,8 @@ public class RPMCommand extends MockObdCommand{
     }
 
     public RPMCommand() {
+        super("010C", "41 0C 32 96>", "RPM del motor", true);
     }
-
-    public String generateResponse() {
-		String responseHeader = prepareCommandResponse();
-		Integer processedValue = transformValue();
-		String stValue = putSpaces(Integer.toHexString(processedValue)).toUpperCase();
-        String res = responseHeader + stValue  + ">";
-		return  res;
-	}
 
 	public String parseResponse(){
        return value + " RPM";
@@ -39,12 +32,11 @@ public class RPMCommand extends MockObdCommand{
 		return Integer.valueOf(value) * 4;
 	}
 
-	public Boolean validateInput(String val){
+    public Boolean validateInput(String val) {
         if (TextUtils.isEmpty(val)) {
             return false;
         }
-
-        return TextUtils.isDigitsOnly(val);
+        return TextUtils.isDigitsOnly(val) && val.length() < 65536;
     }
-	
+
 }
