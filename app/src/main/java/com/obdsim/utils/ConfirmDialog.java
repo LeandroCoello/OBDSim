@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -121,7 +122,7 @@ public class ConfirmDialog {
         final DataBaseService db = commandsActivity.getDataBaseService();
 
 
-        TableLayout view  = (TableLayout) inflater.inflate(R.layout.staupdate_cmd_dialog, null);
+        LinearLayout view  = (LinearLayout) inflater.inflate(R.layout.staupdate_cmd_dialog, null);
         View title = inflater.inflate(R.layout.update_command_title, null);
         final TextView txtCmd = (TextView) view.findViewById(R.id.edit_command);
         final EditText editResponse = (EditText) view.findViewById(R.id.edit_response);

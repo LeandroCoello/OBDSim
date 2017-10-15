@@ -10,7 +10,7 @@ public class AbsoluteLoadCommand extends MassAirFlowCommand {
 
     public AbsoluteLoadCommand() {
 
-        super("0143", "41 43 64 FA>", "Valor absoluto de carga", true);
+        super("0143", "41 43 00 3E>", "Valor absoluto de carga", true);
     }
 
     public String parseResponse(){

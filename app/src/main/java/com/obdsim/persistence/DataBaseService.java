@@ -88,6 +88,33 @@ public class DataBaseService extends SQLiteOpenHelper {
         return cmds;
     }
 
+    public String getResponse(String code) {
+
+        String[] projection = {
+                ObdCommandContract.CommandEntry.RESPONSE
+        };
+        String res = "";
+        String whereColumns = ObdCommandContract.CommandEntry.CODE + "=?";
+        String[] whereColumnsValues = new String[] {code};
+        Cursor c = db.query(
+                ObdCommandContract.CommandEntry.TABLE_NAME,                     // The table to query
+                projection,                               // The columns to return
+                whereColumns,                                // The columns for the WHERE clause
+                whereColumnsValues,//   selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null//     sortOrder                                 // The sort order
+        );
+
+        if (c.moveToFirst()) {
+            do {
+                res = c.getString(0);
+            } while(c.moveToNext());
+        }
+        c.close();
+        return res;
+    }
+
     public void insertCommand(MockObdCommand cmd) {
         ContentValues values = new ContentValues();
 

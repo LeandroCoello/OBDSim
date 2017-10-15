@@ -8,7 +8,7 @@ public class ConsumptionRateCommand extends MassAirFlowCommand {
 
     public ConsumptionRateCommand() {
 
-        super("015E", "41 5E 64 FA>", "Índice de consumo de combustible", true);
+        super("015E", "41 5E 00 78>", "Índice de consumo de combustible", true);
     }
 
     public String parseResponse(){
