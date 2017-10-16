@@ -29,7 +29,7 @@ public class StateCommandsActivity extends CommandsActivity {
         dataBaseService = new DataBaseService(this);
         String where = ObdCommandContract.CommandEntry.STATE_FLAG + "=?";
         String [] values = new String[] {"1"};
-        commands = dataBaseService.getCommands(where,values);
+        commands = dataBaseService.getCommands(where,values,true);
 
         recyclerView = (RecyclerView) findViewById(R.id.command_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -18,7 +18,7 @@ public class FuelLevelCommand extends MockObdCommand  {
     }
 
     public FuelLevelCommand() {
-        super("012F", "41 5E 64>", "Nivel de combustible", true);
+        super("012F", "41 2F 64>", "Nivel de combustible", true);
     }
 
     public String parseResponse(){
@@ -27,6 +27,10 @@ public class FuelLevelCommand extends MockObdCommand  {
 
     public String setValue() {
         String res = getResponse().replaceAll("\\s","");
+        if (res.length() < 6) {
+            value = "-1";
+            return value;
+        }
         res = res.substring(4,6);
         Float val = Long.parseLong(res, 16) / 2.55f;
         val = roundValue(val);

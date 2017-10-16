@@ -8,7 +8,7 @@ public class RuntimeCommand extends RPMCommand {
 
     Long lValue = 0L;
     public RuntimeCommand() {
-        super("011F", "41 0F 10 14>", "Tiempo en marcha del motor", true);
+        super("011F", "41 1F 10 14>", "Tiempo en marcha del motor", true);
     }
 
     public RuntimeCommand(String cmd, String response, String desc, Boolean isState) {
@@ -21,6 +21,10 @@ public class RuntimeCommand extends RPMCommand {
 
     public String setValue() {
         String res = getResponse().replaceAll("\\s","");
+        if (res.length() < 8) {
+            value = "-1";
+            return value;
+        }
         res = res.substring(4,8);
         Long val = Long.parseLong(res, 16);
         lValue = val;

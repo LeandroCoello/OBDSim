@@ -22,6 +22,10 @@ public class RPMCommand extends MockObdCommand{
 
     public String setValue() {
         String res = getResponse().replaceAll("\\s","");
+        if (res.length() < 8) {
+            value = "-1";
+            return value;
+        }
         res = res.substring(4,8);
         Long val = Long.parseLong(res, 16) / 4;
         value = val.toString();

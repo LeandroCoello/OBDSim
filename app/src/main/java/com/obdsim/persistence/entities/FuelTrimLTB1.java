@@ -16,6 +16,10 @@ public class FuelTrimLTB1 extends FuelLevelCommand {
 
     public String setValue() {
         String res = getResponse().replaceAll("\\s","");
+        if (res.length() < 6) {
+            value = "-1";
+            return value;
+        }
         res = res.substring(4,6);
         Float val = (Long.parseLong(res, 16) - 128) * 100.0f / 128.0f;
         val = roundValue(val);

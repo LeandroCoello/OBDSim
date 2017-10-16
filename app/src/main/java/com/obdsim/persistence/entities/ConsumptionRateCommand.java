@@ -17,6 +17,10 @@ public class ConsumptionRateCommand extends MassAirFlowCommand {
 
     public String setValue() {
         String res = getResponse().replaceAll("\\s","");
+        if (res.length() < 8) {
+            value = "-1";
+            return value;
+        }
         res = res.substring(4,8);
         Float val = Long.parseLong(res, 16) * 0.05f ;
         val = roundValue(val);

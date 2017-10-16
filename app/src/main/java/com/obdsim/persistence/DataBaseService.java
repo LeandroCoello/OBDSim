@@ -33,7 +33,7 @@ public class DataBaseService extends SQLiteOpenHelper {
         db.execSQL(ObdCommandContract.SQL_CREATE_COMMAND_ENTRIES);
         this.db = db;
 
-        if (getCommands(null,null).size() == 0) {
+        if (getCommands(null,null,null).size() == 0) {
             for (MockObdCommand mCmd : CommandsContainer.getInstance().getCommandList()) {
                 insertCommand(mCmd);
             }
@@ -49,7 +49,7 @@ public class DataBaseService extends SQLiteOpenHelper {
 
     //////////////////////Commands///////////////////////////
 
-    public ArrayList<MockObdCommand> getCommands(String whereColumns, String[] whereColumnsValues) {
+    public ArrayList<MockObdCommand> getCommands(String whereColumns, String[] whereColumnsValues, Boolean setValue) {
 
         ArrayList<MockObdCommand> cmds = new ArrayList<MockObdCommand>();
 
@@ -73,7 +73,7 @@ public class DataBaseService extends SQLiteOpenHelper {
 
         if (c.moveToFirst()) {
             do {
-                MockObdCommand cmd = ObdCommandRowMapper.getCommand(c);
+                MockObdCommand cmd = ObdCommandRowMapper.getCommand(c, setValue);
                 if (cmd == null) {
                     Integer id = c.getInt(0);
                     String cmdSt = c.getString(1);

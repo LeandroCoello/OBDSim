@@ -26,6 +26,10 @@ public class EngineCoolantTemperatureCommand extends MockObdCommand {
 
     public String setValue() {
         String res = getResponse().replaceAll("\\s","");
+        if (res.length() < 6) {
+            value = "-1";
+            return value;
+        }
         res = res.substring(4,6);
         Long val = Long.parseLong(res, 16) - 40;
         value = val.toString();

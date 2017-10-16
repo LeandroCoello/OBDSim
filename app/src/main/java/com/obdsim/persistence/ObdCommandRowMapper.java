@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 
 public class ObdCommandRowMapper {
 
-    public static MockObdCommand getCommand(Cursor c){
+    public static MockObdCommand getCommand(Cursor c, Boolean setValue){
         MockObdCommand cmd = null;
         CommandsContainer ins = CommandsContainer.getInstance();
         LinkedHashMap<String, Class<? extends MockObdCommand>> map = ins.getMap();
@@ -31,8 +31,9 @@ public class ObdCommandRowMapper {
         cmd.setResponse(c.getString(2));
         cmd.setStateFlag(stateFlag);
         cmd.setDescription(c.getString(4));
-        cmd.setValue();
-
+        if (setValue != null && setValue) {
+            cmd.setValue();
+        }
         return cmd;
     }
 }

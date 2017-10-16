@@ -77,79 +77,53 @@ public class CommandsContainer {
 
         //Available pids
 
-        commandList.add(new MockObdCommand("0100", "01 00 FF FF FF FF>"));
-        commandList.add(new MockObdCommand("0120", "01 20 FF FF FF FF>"));
-        commandList.add(new MockObdCommand("0140", "01 40 FF FF FF FF>"));
-        commandList.add(new MockObdCommand("0160", "01 60 FF FF FF FF>"));
-        commandList.add(new MockObdCommand("0180", "01 80 FF FF FF F0>"));
+        commandList.add(new MockObdCommand("0100", "41 00 FF FF FF FF>"));
+        commandList.add(new MockObdCommand("0120", "41 20 FF FF FF FF>"));
+        commandList.add(new MockObdCommand("0140", "41 40 FF FF FF FF>"));
+        commandList.add(new MockObdCommand("0160", "41 60 FF FF FF FF>"));
+        commandList.add(new MockObdCommand("0180", "41 80 FF FF FF F0>"));
 
         // Control
 
-//        commandList.add(new MockObdCommand("0146", "41 46 50>"));
         commandList.add(new AmbientAirTemperatureCommand());
-//        commandList.add(new MockObdCommand("0142", "41 42 0F 0F>"));
         commandList.add(new ModuleVoltageCommand());
-//        commandList.add(new MockObdCommand("0143", "41 43 64 FA>"));
         commandList.add(new AbsoluteLoadCommand());
-//        commandList.add(new MockObdCommand("0144", "41 44 64 FF>"));
         commandList.add(new AirFuelRatioCommand());
-//        commandList.add(new MockObdCommand("0121", "41 21 10 00>"));
         commandList.add(new MockObdCommand("0121", "41 21 10 00>"));
         commandList.add(new DistanceMILOnCommand());
-//        commandList.add(new MockObdCommand("010E", "41 0E 84>"));
         commandList.add(new TimingAdvanceCommand());
         commandList.add(new MockObdCommand("03", "43 05 7F 01 26 D3 97>"));
         commandList.add(new MockObdCommand("0902", "31 48 47 42 48 34 31 4A 58 4D 4E 31 30 39 31 38 36>"));
 
         // Engine
-//        commandList.add(new MockObdCommand("0104", "41 04 78>"));
         commandList.add(new LoadCommand());
-//        commandList.add(new MockObdCommand("010C", "41 0C 32 96>"));
         commandList.add(new RPMCommand());
-//        commandList.add(new MockObdCommand("011F", "41 0F 10 14>"));
         commandList.add(new RuntimeCommand());
-//        commandList.add(new MockObdCommand("0110", "41 10 64 64>"));
         commandList.add(new MassAirFlowCommand());
-//        commandList.add(new MockObdCommand("0111", "41 11 96>"));
         commandList.add(new ThrottlePositionCommand());
 
         // Fuel
         commandList.add(new MockObdCommand("0151", "41 51 01>"));
-//        commandList.add(new MockObdCommand("015E", "41 5E 64 FA>"));
         commandList.add(new ConsumptionRateCommand());
-//        commandList.add(new MockObdCommand("012F", "41 5E 64>"));
         commandList.add(new FuelLevelCommand());
-//        commandList.add(new MockObdCommand("0106", "41 06 B4>"));
         commandList.add(new FuelTrimSTB1());
-//        commandList.add(new MockObdCommand("0107", "41 07 B4>"));
         commandList.add(new FuelTrimLTB1());
-//        commandList.add(new MockObdCommand("0108", "41 08 B4>"));
         commandList.add(new FuelTrimSTB2());
-//        commandList.add(new MockObdCommand("0109", "41 09 B4>"));
         commandList.add(new FuelTrimLTB2());
-//        commandList.add(new MockObdCommand("0134", "41 34 34 87>"));
         commandList.add(new WidebandAirFuelRatioCommand());
-//        commandList.add(new MockObdCommand("015C", "41 5C 64>"));
         commandList.add(new OilTempCommand());
 
         // Pressure
-//        commandList.add(new MockObdCommand("0133", "41 33 96>"));
         commandList.add(new BarometricPressureCommand());
-//        commandList.add(new MockObdCommand("010A", "41 0A 97>"));
         commandList.add(new FuelPressureCommand());
-//        commandList.add(new MockObdCommand("0123", "41 23 98 15>"));
         commandList.add(new FuelRailPressureCommand());
-//        commandList.add(new MockObdCommand("010B", "41 0B 99>"));
         commandList.add(new IntakeManifoldPressureCommand());
 
         // Temperature
-//        commandList.add(new MockObdCommand("010F", "41 0F A0>"));
         commandList.add(new AirIntakeTemperatureCommand());
-//        commandList.add(new MockObdCommand("0105", "41 05 A1>"));
         commandList.add(new EngineCoolantTemperatureCommand());
 
         // Misc
-//        commandList.add(new MockObdCommand("010D", "41 0D A0>"));
         commandList.add(new SpeedCommand());
 
     }

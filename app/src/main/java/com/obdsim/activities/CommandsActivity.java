@@ -32,7 +32,7 @@ public class CommandsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commands);
         dataBaseService = new DataBaseService(this);
-        commands = dataBaseService.getCommands(null,null);
+        commands = dataBaseService.getCommands(null,null,false);
 
         recyclerView = (RecyclerView) findViewById(R.id.command_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
