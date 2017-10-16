@@ -36,6 +36,22 @@ public class RPMCommand extends MockObdCommand{
 		return Integer.valueOf(value) * 4;
 	}
 
+    public String validateZeros(String stValue) {
+        Integer len = stValue.length();
+
+        if (len == 3) {
+            return "0"+stValue;
+        }
+
+        if (len == 2) {
+            return "00"+stValue;
+        }
+        if (len == 1) {
+            return "000"+stValue;
+        }
+
+        return stValue;
+    }
     public Boolean validateInput(String val) {
         if (TextUtils.isEmpty(val)) {
             return false;

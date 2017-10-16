@@ -32,6 +32,25 @@ public class RuntimeCommand extends RPMCommand {
         return value;
     }
 
+    @Override
+    public String validateZeros(String stValue) {
+        Integer len = stValue.length();
+
+        if (len == 3) {
+            return "0"+stValue;
+        }
+
+        if (len == 2) {
+            return "00"+stValue;
+        }
+
+        if (len == 1) {
+            return "000"+stValue;
+        }
+
+        return stValue;
+    }
+
     public Integer transformValue() {
         return Integer.valueOf(value);
     }

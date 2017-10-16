@@ -45,6 +45,10 @@ public class MassAirFlowCommand extends FuelLevelCommand {
             return "00"+stValue;
         }
 
+        if (len == 1) {
+            return "000"+stValue;
+        }
+
         return stValue;
     }
 

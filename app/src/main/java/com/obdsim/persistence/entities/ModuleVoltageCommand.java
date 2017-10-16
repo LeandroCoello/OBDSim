@@ -24,21 +24,6 @@ public class ModuleVoltageCommand extends MassAirFlowCommand {
         return  res;
     }
 
-    @Override
-    public String validateZeros(String stValue) {
-        Integer len = stValue.length();
-
-        if (len == 3) {
-            return "0"+stValue;
-        }
-
-        if (len == 2) {
-            return "00"+stValue;
-        }
-
-        return stValue;
-    }
-
     public String setValue() {
         String res = getResponse().replaceAll("\\s","");
         if (res.length() < 8) {

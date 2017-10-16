@@ -32,6 +32,16 @@ public class SpeedCommand extends MockObdCommand {
         return value;
     }
 
+    @Override
+    public String validateZeros(String stValue) {
+        Integer len = stValue.length();
+
+        if (len == 1) {
+            return "0"+stValue;
+        }
+
+        return stValue;
+    }
     public Integer transformValue() {
         return Integer.valueOf(value);
     }

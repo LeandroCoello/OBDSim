@@ -84,11 +84,16 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
                             publishProgress(getPublishList(response, "4"));
 
                         } catch (Exception e) {
-                            publishProgress(getPublishList(main.getString(R.string.problem_receiving), "1"));
+                            publishProgress(getPublishList(main.getString(R.string.connection_closed), "0"));
+                            publishProgress(getPublishList(main.getString(R.string.connecting), "0"));
+                            socket.getInputStream().close();
+                            socket.getOutputStream().close();
                             socket.close();
                             socket = null;
                             break;
                         }
+
+
                     }
                 }
             } catch (IOException e) {

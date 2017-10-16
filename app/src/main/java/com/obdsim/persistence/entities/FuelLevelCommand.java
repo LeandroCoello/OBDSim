@@ -38,6 +38,17 @@ public class FuelLevelCommand extends MockObdCommand  {
         return value;
     }
 
+    @Override
+    public String validateZeros(String stValue) {
+        Integer len = stValue.length();
+
+        if (len == 1) {
+            return "0"+stValue;
+        }
+
+        return stValue;
+    }
+
     public Integer transformValue() {
         Float va = Float.parseFloat(value);
         va = va * 2.55f;
