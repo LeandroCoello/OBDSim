@@ -3,21 +3,18 @@ package com.obdsim.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.obdsim.R;
 import com.obdsim.activities.CommandsActivity;
+import com.obdsim.activities.MainActivity;
 import com.obdsim.persistence.DataBaseService;
 import com.obdsim.persistence.entities.MockObdCommand;
-
-import org.w3c.dom.Text;
 
 public class ConfirmDialog {
 
@@ -46,29 +43,6 @@ public class ConfirmDialog {
         alertDialog.show();
     }
 
-//    public static void showCancellingDialog(final Context context, String title, String msg) {
-//
-//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-//                context);
-//
-//        final StateActivity sta = (StateActivity) context;
-//        // set dialog message
-//        alertDialogBuilder
-//                .setTitle(title)
-//                .setMessage(msg)
-//                .setCancelable(false)
-//                .setPositiveButton("Ok",new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog,int id) {
-//                        dialog.cancel();
-//                        sta.finish();
-//                    }
-//                });
-//
-//        AlertDialog alertDialog = alertDialogBuilder.create();
-//
-//        alertDialog.show();
-//    }
-
     public static AlertDialog.Builder getDialog(final Context context, String title, String msg) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -82,6 +56,37 @@ public class ConfirmDialog {
                 .setCancelable(false);
 
         return alertDialogBuilder;
+    }
+
+    public static AlertDialog getWaitTimeDialog(final MainActivity mainActivity){
+
+        LayoutInflater inflater = mainActivity.getLayoutInflater();
+
+        TableLayout view  = (TableLayout) inflater.inflate(R.layout.update_wait, null);
+        View title = inflater.inflate(R.layout.update_command_title, null);
+        final TextView titleView = (TextView) title.findViewById(R.id.dialog_title);
+        titleView.setText("Update Wait Time");
+
+        final EditText waitTime = (EditText) view.findViewById(R.id.edit_wait);
+        Integer value = mainActivity.getWaitTime();
+        waitTime.setText(value.toString());
+        AlertDialog dialog = new AlertDialog.Builder(mainActivity)
+                .setCustomTitle(title)
+                .setView(view)
+                .setCancelable(false)
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        int input = Integer.parseInt(waitTime.getText().toString());
+                        mainActivity.setWaitTime(input);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+        return dialog;
     }
 
     public static AlertDialog getUpdateDialog(final CommandsActivity commandsActivity, final MockObdCommand cmd){
@@ -137,7 +142,6 @@ public class ConfirmDialog {
                             commandsActivity.showToast("Invalid Input!");
                             return;
                         }
-//                        cmd.setCmd(txtCmd.getText().toString());
                         cmd.setValue(editResponse.getText().toString());
                         cmd.setResponse(cmd.generateResponse());
                         db.updateCommand(cmd);

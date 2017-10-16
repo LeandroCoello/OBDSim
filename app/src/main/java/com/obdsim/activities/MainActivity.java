@@ -1,9 +1,12 @@
 package com.obdsim.activities;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,7 +18,12 @@ import com.obdsim.persistence.entities.MockObdCommand;
 import com.obdsim.tasks.BluetoothTask;
 import com.obdsim.R;
 import com.obdsim.persistence.DataBaseService;
+import com.obdsim.utils.ConfirmDialog;
+import com.obdsim.utils.Constants;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +31,9 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_ENABLE_BT = 1234;
+    private static final int UPDATE_COMMAND = 0;
+    int waitTime = Constants.WAIT_TIME;
+
 
     // Name for the SDP record when creating server socket
     private static final String NAME_SECURE = "BluetoothChatSecure";
@@ -58,6 +69,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        menu.add(0, UPDATE_COMMAND, 0, "Update Wait Time");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case UPDATE_COMMAND:
+                ConfirmDialog.getWaitTimeDialog(this).show();
+        }
+        return false;
+    }
+
 
     public void start(View v){
         states = new ArrayList<String>();
@@ -90,9 +117,25 @@ public class MainActivity extends AppCompatActivity {
         stopButton.setEnabled(false);
 
         if (listeningThread != null && !listeningThread.isCancelled()) {
+
+            BluetoothSocket socket = listeningThread.getSocket();
+            if (socket == null) {
+                return;
+            }
+            InputStream in = null;
+            try {
+                in = socket.getInputStream();
+                in.close();
+                OutputStream out = socket.getOutputStream();
+                out.close();
+                socket.close();
+            } catch (IOException e) {
+                updateStatus(e.getMessage(), 2);
+            }
             listeningThread.cancel(true);
             listeningThread = null;
         }
+
     }
 
     public void showCommands(View v) {
@@ -217,6 +260,17 @@ public class MainActivity extends AppCompatActivity {
 
     public DataBaseService getDataBaseService() {
         return dataBaseService;
+    }
+
+    public int getWaitTime() {
+        return waitTime;
+    }
+
+    public void setWaitTime(int waitTime) {
+        this.waitTime = waitTime;
+        if (listeningThread != null) {
+            listeningThread.setWaitTime(waitTime);
+        }
     }
 
     @Override

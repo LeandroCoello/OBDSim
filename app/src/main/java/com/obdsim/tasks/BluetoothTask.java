@@ -11,6 +11,7 @@ import com.obdsim.activities.MainActivity;
 import com.obdsim.persistence.DataBaseService;
 import com.obdsim.persistence.entities.MockObdCommand;
 import com.obdsim.persistence.ObdCommandContract;
+import com.obdsim.utils.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +32,8 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
     private InputStream mmInStream = null;
     private OutputStream mmOutStream= null;
     DataBaseService dataBaseService;
-    BluetoothSocket socket = null;
+    BluetoothSocket socket;
+    private int waitTime = 0;
 
     public BluetoothTask(BluetoothAdapter mBluetoothAdapter, MainActivity main) {
         // Use a temporary object that is later assigned to mmServerSocket,
@@ -43,7 +45,7 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
             tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(main.getNameSecure(),main.getMyUuid());
         } catch (IOException e) { }
         mmServerSocket = tmp;
-
+        waitTime = main.getWaitTime();
         dataBaseService = main.getDataBaseService();
 
     }
@@ -73,12 +75,15 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
                             String readMessage = new String(buffer, 0, bytesReceived).trim();
                             publishProgress(getPublishList(readMessage, "3"));
 
+                            if (waitTime > 0) {
+                                Thread.sleep(waitTime);
+                            }
                             // Get response and write it into OutputStream
                             String response = dataBaseService.getResponse(readMessage);
                             mmOutStream.write(response.getBytes());
                             publishProgress(getPublishList(response, "4"));
 
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             publishProgress(getPublishList(main.getString(R.string.problem_receiving), "1"));
                             socket.close();
                             socket = null;
@@ -120,11 +125,27 @@ public class BluetoothTask extends AsyncTask<String,ArrayList<String>,String> {
         main.updateStatus(main.getString(R.string.process_terminated), 0);
     }
 
+    public int getWaitTime() {
+        return waitTime;
+    }
+
+    public void setWaitTime(int waitTime) {
+        this.waitTime = waitTime;
+    }
+
+    public BluetoothSocket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(BluetoothSocket socket) {
+        this.socket = socket;
+    }
+
     @Override
     protected void onCancelled() {
-        if ( socket != null ) {
+        if ( mmServerSocket != null ) {
             try {
-                socket.close();
+                mmServerSocket.close();
             } catch (IOException e) {
                 main.showToast(e.getMessage());
             }
