@@ -7,7 +7,7 @@ package com.obdsim.persistence.entities;
 public class FuelRailPressureCommand extends RuntimeCommand {
 
     public FuelRailPressureCommand() {
-        super("0123", "41 23 98 15>", "Presión del medidor del tren de combustible", true);
+        super("0123", "41 23 00 9B>", "Presión del medidor del tren de combustible", true);
     }
 
     public String parseResponse(){
