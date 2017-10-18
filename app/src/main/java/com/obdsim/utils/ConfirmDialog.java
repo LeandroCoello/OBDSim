@@ -144,6 +144,7 @@ public class ConfirmDialog {
                         }
                         cmd.setValue(editResponse.getText().toString());
                         cmd.setResponse(cmd.generateResponse());
+                        cmd.setValue();
                         db.updateCommand(cmd);
                         commandsActivity.refreshRecyclerViewAdapter();
                         commandsActivity.showToast("Update Succesful!");
